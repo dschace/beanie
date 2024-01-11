@@ -147,7 +147,7 @@ class PydanticObjectId(ObjectId):
             cls, source_type: Any, handler: GetCoreSchemaHandler
         ) -> CoreSchema:  # type: ignore
             return core_schema.json_or_python_schema(
-                python_schema=core_schema.general_plain_validator_function(
+                python_schema=core_schema.with_info_plain_validator_function(
                     cls.validate
                 ),
                 json_schema=str_schema(),
@@ -396,7 +396,7 @@ class Link(Generic[T]):
             cls, source_type: Any, handler: GetCoreSchemaHandler
         ) -> CoreSchema:  # type: ignore
             return core_schema.json_or_python_schema(
-                python_schema=core_schema.general_plain_validator_function(
+                python_schema=core_schema.with_info_plain_validator_function(
                     cls.build_validation(handler, source_type)
                 ),
                 json_schema=core_schema.typed_dict_schema(
@@ -413,7 +413,7 @@ class Link(Generic[T]):
                     lambda instance: cls.serialize(instance)  # type: ignore
                 ),
             )
-            return core_schema.general_plain_validator_function(
+            return core_schema.with_info_plain_validator_function(
                 cls.build_validation(handler, source_type)
             )
 
@@ -473,7 +473,7 @@ class BackLink(Generic[T]):
         def __get_pydantic_core_schema__(
             cls, source_type: Any, handler: GetCoreSchemaHandler
         ) -> CoreSchema:  # type: ignore
-            return core_schema.general_plain_validator_function(
+            return core_schema.with_info_plain_validator_function(
                 cls.build_validation(handler, source_type)
             )
 
@@ -580,7 +580,7 @@ class IndexModelField:
                 else:
                     return IndexModelField(IndexModel(v))
 
-            return core_schema.general_plain_validator_function(validate)
+            return core_schema.with_info_plain_validator_function(validate)
 
     else:
 
